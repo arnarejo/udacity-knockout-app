@@ -2,3 +2,8 @@
   height: 250px;
   width: 100%;
 }
+
+input {
+  width: 100px;
+  border: 2px solid green;
+}

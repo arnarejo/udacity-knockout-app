@@ -1,8 +1,5 @@
-// map center location
-let center = {lat: -35.2914808, lng: 149.1296499};
-
 // areas of interest in canberra
-let myLocations = [
+let initialLocations = [
   {
     name: 'National Museum of Australia',
     location: {lat: -35.2933, lng: 149.1211},

@@ -9,11 +9,23 @@
 </head>
 <body>
   <div id="map"></div>
+  <div class="menu">
+    <form action="">
+      <p>Search For
+    <input type="text" data-bind="value: searchTerm, valueUpdate: 'afterkeydown'" value="john">
+    </p>
+    </form>
+
+    <ul data-bind="foreach: customList">
+      <li data-bind="text: $data.name"></li>
+    </ul>
+  </div>
   <script async defer
 src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCvcgUNisN_yrqEahRX89HT8Q2mtI3nTds&callback=initMap">
 </script>
 <script src="js/jquery-3.2.1.min.js"></script>
 <script src="js/knockout-3.4.2.js"></script>
+<script src="js/locations.js"></script>
 <script src="js/main.js"></script>
 
 
