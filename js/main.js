@@ -2,6 +2,7 @@ var Location = function(data) {
   this.name = data.name;
   this.location = data.location;
   this.fsId = data.fsId;
+  this.visible = ko.observable(true);
 
 }
 
@@ -15,11 +16,24 @@ var viewModel = function() {
     self.customList.push(new Location(eachLocation));
   });
 
+
   this.visibleList = ko.computed( function() {
   		var filter = self.searchTerm().toLowerCase();
-  		if (filter.length > 0) {
-        console.log(filter);
-  		}
+  		if (!filter) {
+        self.customList().forEach(function(eachLocation) {
+          eachLocation.visible(true);
+        });
+        return self.customList();
+  		} else {
+        return ko.utils.arrayFilter(self.customList(), function(eachLocation) {
+          var alpha = eachLocation.name.toLowerCase();
+          var result = (alpha.search(filter) >= 0);
+          console.log(result);
+          eachLocation.visible(result);
+          return result;
+        });
+      }
+
   	}, self);
 
 
