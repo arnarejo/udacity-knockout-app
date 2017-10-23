@@ -12,25 +12,25 @@ var viewModel = function() {
   this.searchTerm = ko.observable('');
   console.log(this.searchTerm());
 
-  initialLocations.forEach(function(eachLocation) {
-    self.customList.push(new Location(eachLocation));
+  initialLocations.forEach(function(location) {
+    self.customList.push(new Location(location));
   });
 
 
   this.visibleList = ko.computed( function() {
   		var filter = self.searchTerm().toLowerCase();
   		if (!filter) {
-        self.customList().forEach(function(eachLocation) {
-          eachLocation.visible(true);
+        self.customList().forEach(function(location) {
+          location.visible(true);
         });
         return self.customList();
   		} else {
-        return ko.utils.arrayFilter(self.customList(), function(eachLocation) {
-          var alpha = eachLocation.name.toLowerCase();
-          var result = (alpha.search(filter) >= 0);
-          console.log(result);
-          eachLocation.visible(result);
-          return result;
+        return ko.utils.arrayFilter(self.customList(), function(location) {
+           var alpha = location.name.toLowerCase();
+           if (alpha.search(filter) >= 0) {
+             location.visible(true);
+             return true;
+           }
         });
       }
 
