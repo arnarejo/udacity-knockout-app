@@ -1,3 +1,7 @@
+var viewModel = function() {
+
+}
+
 function initMap() {
   // map center location
   let center = {lat: -35.2914808, lng: 149.1296499};
@@ -6,3 +10,5 @@ function initMap() {
     center: center
   });
 };
+
+ko.applyBindings(new viewModel());
