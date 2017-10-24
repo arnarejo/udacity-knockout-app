@@ -16,8 +16,9 @@ var Location = function(data) {
   this.name = data.name;
   this.location = data.location;
   this.fsId = data.fsId;
-
   this.visible = ko.observable(true);
+  this.infoText = this.name;
+
 
 }
 
@@ -25,7 +26,7 @@ var viewModel = function() {
   self = this;
   this.customList = ko.observableArray([]);
   this.searchTerm = ko.observable('');
-  console.log(this.searchTerm());
+//  console.log(this.searchTerm());
 
   initialLocations.forEach(function(location) {
     self.customList.push(new Location(location));
@@ -44,6 +45,10 @@ var viewModel = function() {
         if (alpha.indexOf(filter) >= 0) {
           location.visible(true);
           return true;
+        } else {
+          location.visible(false);
+          return false;
+
         }
       });
     }
@@ -56,8 +61,26 @@ function initMap() {
   // map center location
   let center = {lat: -35.2914808, lng: 149.1296499};
   map = new google.maps.Map(document.getElementById('map'), {
-    zoom: 12,
+    zoom: 11,
     center: center
+  });
+
+  self.customList().forEach(function(location) {
+    self.marker = new google.maps.Marker({
+      position: location.location,
+      map: map,
+      title: location.name
+    });
+
+    var infowindow = new google.maps.InfoWindow({
+      content: location.name,
+      position: location.location
+    });
+
+  self.marker.addListener('click', function() {
+      infowindow.close(map, null);
+      infowindow.open(map, this.marker);
+            });
   });
 
 };
