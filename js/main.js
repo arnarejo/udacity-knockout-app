@@ -1,6 +1,6 @@
 'use strict';
 
-var map;
+var map, infowindow;
 
 // foursquare API details
 var baseURL = "https://api.foursquare.com/v2/venues/";
@@ -17,16 +17,66 @@ var Location = function(data) {
   this.location = data.location;
   this.fsId = data.fsId;
   this.visible = ko.observable(true);
-  this.infoText = this.name;
+  this.phone = '';
+  this.shortUrl = '';
 
+  var fullURL = baseURL + this.fsId + "?&client_id=" + client_id + "&client_secret=" + client_secret + "&v=" + version;
+
+  $.getJSON(fullURL).done(function(data) {
+    var results = data.response.venue;
+    self.phone = results.contact.phone;
+    self.shortUrl = results.shortUrl;
+  });
+
+  this.infowindow = new google.maps.InfoWindow();
+
+  google.maps.event.addListener(map, 'click', function() {
+  				self.infowindow.close();
+  			});
+
+  this.marker = new google.maps.Marker({
+    position: self.location,
+    animation: google.maps.Animation.DROP,
+    map: map,
+    title: self.name
+  });
+
+  this.marker.addListener('click', function() {
+    self.infoText = data.name + '</br>' + self.phone + '</br>' + self.shortUrl;
+    self.infowindow.setContent(self.infoText);
+    self.infowindow.open(map, self.marker);
+    // Make marker bounce on click for only two bounces
+    self.marker.setAnimation(google.maps.Animation.BOUNCE);
+    setTimeout(function () {
+      self.marker.setAnimation(null);
+    }, 1410);
+
+
+  });
+
+// Click function to display specific infowindow
+  this.showInfoWindow = function() {
+    google.maps.event.trigger(self.marker, 'click');
+  }
+
+  // make markers ko observable and link with the search results
+  this.visibleMarkers = ko.computed(function() {
+    if(this.visible()) {
+      this.marker.setMap(map);
+    } else {
+      this.marker.setMap(null);
+    }
+
+  }, this);
 
 }
+
 
 var viewModel = function() {
   self = this;
   this.customList = ko.observableArray([]);
   this.searchTerm = ko.observable('');
-//  console.log(this.searchTerm());
+  //  console.log(this.searchTerm());
 
   initialLocations.forEach(function(location) {
     self.customList.push(new Location(location));
@@ -58,31 +108,15 @@ var viewModel = function() {
 };
 
 function initMap() {
+
   // map center location
   let center = {lat: -35.2914808, lng: 149.1296499};
   map = new google.maps.Map(document.getElementById('map'), {
     zoom: 11,
-    center: center
+    center: center,
+    styles: customStyle
   });
 
-  self.customList().forEach(function(location) {
-    self.marker = new google.maps.Marker({
-      position: location.location,
-      map: map,
-      title: location.name
-    });
-
-    var infowindow = new google.maps.InfoWindow({
-      content: location.name,
-      position: location.location
-    });
-
-  self.marker.addListener('click', function() {
-      infowindow.close(map, null);
-      infowindow.open(map, this.marker);
-            });
-  });
+  ko.applyBindings(new viewModel());
 
 };
-
-ko.applyBindings(new viewModel());

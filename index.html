@@ -8,7 +8,12 @@
   <title>Udacity Neighbourhood Map</title>
 </head>
 <body>
+
+  <div class="nav">
+    <h3>Udacity Neighbourhood Map</h3>
+  </div>
   <div id="map"></div>
+
   <div class="menu">
     <form action="">
       <p>Search For
@@ -17,13 +22,13 @@
     </form>
 
     <ul data-bind="foreach: visibleList">
-      <li data-bind="text: $data.name"></li>
+      <li data-bind="text: $data.name, click: showInfoWindow"></li>
     </ul>
   </div>
 
-
 <script src="js/knockout-3.4.2.js"></script>
 <script src="js/jquery-3.2.1.min.js"></script>
+<script src="js/mapstyle.js"></script>
 <script src="js/locations.js"></script>
 <script src="js/main.js"></script>
 

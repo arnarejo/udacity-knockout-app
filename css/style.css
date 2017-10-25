@@ -1,9 +1,54 @@
+*, html, body {
+  margin: 0px;
+  padding: 0px;
+}
+
+html, body {
+  height: 100%;
+}
+.nav {
+  height: 50px;
+  background-color: orange;
+  color: white;
+  z-index: 2;
+  padding-top: 10px;
+  padding-left: 25px;
+}
 #map {
-  height: 350px;
+  height: 100%;
   width: 100%;
+  position: absolute;
+}
+
+.menu {
+  position: absolute;
+  z-index: 1;
+  background-color: orange;
+  width: 300px;
+  height: 100%;
+  opacity: 0.65;
+  padding-top: 25px;
+}
+
+form {
+  margin: 15px 0px;
 }
 
 input {
-  width: 100px;
-  border: 2px solid green;
+  height: 35px;
+  width: 150px;
+  border: 3px solid grey;
+}
+
+input:hover {
+  border: 5px solid green;
+}
+
+.menu li {
+  border-bottom: 2px solid white;
+  padding-top: 15px;
+  padding-left: 5px;
+}
+.menu li:hover {
+  padding-left: 10px;
 }
