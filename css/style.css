@@ -52,3 +52,15 @@ input:hover {
 .menu li:hover {
   padding-left: 10px;
 }
+
+.info {
+  height: 100px;
+  width: 200px;
+  background-color: #ddd;
+}
+
+.info h3 {
+  font-size: 15px;
+  font-style: bold;
+  color: orange;
+}

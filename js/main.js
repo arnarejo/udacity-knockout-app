@@ -28,7 +28,8 @@ var Location = function(data) {
     self.shortUrl = results.shortUrl;
   });
 
-  this.infowindow = new google.maps.InfoWindow();
+
+  this.infowindow = new google.maps.InfoWindow({});
 
   google.maps.event.addListener(map, 'click', function() {
   				self.infowindow.close();
@@ -42,7 +43,11 @@ var Location = function(data) {
   });
 
   this.marker.addListener('click', function() {
-    self.infoText = data.name + '</br>' + self.phone + '</br>' + self.shortUrl;
+
+    // set clicked marker as center of map - can use both map.setCenter() or map.panTo() to achieve similar end result
+    map.panTo(self.marker.getPosition());
+
+    self.infoText = '<div class="info"><h3>' + data.name + '</h3></br>' + self.phone + '</br>' + self.shortUrl + '</div>';
     self.infowindow.setContent(self.infoText);
     self.infowindow.open(map, self.marker);
     // Make marker bounce on click for only two bounces
