@@ -9,6 +9,12 @@ var version = '20171023';
 var client_id = "QNNNN5DX5BXZVPQE5E5TDSTUC02EYCPFBDRP1HN30KEU4K3N";
 var client_secret = "ZQL14F31J2AHUSPDTWWG53AY3BKG5PQE3M3Z3APEIHLRGJ3A";
 
+// Hamburger menu toggle function
+function toggleMenuBar() {
+  document.getElementsByClassName('menu')[0].classList.toggle('inactive');
+}
+
+
 var Location = function(data) {
 
   var self = this;
@@ -24,7 +30,7 @@ var Location = function(data) {
 
   $.getJSON(fullURL).done(function(data) {
     var results = data.response.venue;
-    self.phone = results.contact.phone;
+    self.phone = results.contact.formattedPhone;
     self.shortUrl = results.shortUrl;
   });
 
@@ -47,7 +53,7 @@ var Location = function(data) {
     // set clicked marker as center of map - can use both map.setCenter() or map.panTo() to achieve similar end result
     map.panTo(self.marker.getPosition());
 
-    self.infoText = '<div class="info"><h3>' + data.name + '</h3></br>' + self.phone + '</br>' + self.shortUrl + '</div>';
+    self.infoText = '<div class="info"><h3>' + data.name + '</h3></br>' + '<strong>Phone: </strong>' + self.phone + '</br>' + self.shortUrl + '</div>';
     self.infowindow.setContent(self.infoText);
     self.infowindow.open(map, self.marker);
     // Make marker bounce on click for only two bounces
@@ -75,7 +81,6 @@ var Location = function(data) {
   }, this);
 
 }
-
 
 var viewModel = function() {
   self = this;
@@ -119,7 +124,13 @@ function initMap() {
   map = new google.maps.Map(document.getElementById('map'), {
     zoom: 11,
     center: center,
-    styles: customStyle
+    styles: customStyle,
+    mapTypeControlOptions: {
+        style: google.maps.MapTypeControlStyle.HORIZONTAL_BAR,
+        position: google.maps.ControlPosition.TOP_RIGHT
+    },
+//   disableDefaultUI: true
+
   });
 
   //to resize the map on change of device width
