@@ -7,7 +7,7 @@
   <link rel="stylesheet" href="css/style.css">
 
   <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
-  
+
   <title>Udacity Neighbourhood Map</title>
 </head>
 <body>
@@ -18,6 +18,11 @@
   <div id="map"></div>
 
   <div class="menu">
+    <label class="toggle" onclick="toggleMenuBar()">
+      <div></div>
+      <div></div>
+      <div></div>
+    </label>
     <form action="">
     <input type="text" data-bind="value: searchTerm, valueUpdate: 'afterkeydown'" placeholder="Search">
     </form>
@@ -26,7 +31,11 @@
       <li data-bind="text: $data.name, click: showInfoWindow"></li>
     </ul>
   </div>
-
+<script>
+  function toggleMenuBar() {
+    $('.menu').toggleClass('inactive');
+  }
+</script>
 <script src="js/knockout-3.4.2.js"></script>
 <script src="js/jquery-3.2.1.min.js"></script>
 <script src="js/mapstyle.js"></script>

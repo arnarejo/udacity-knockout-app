@@ -34,6 +34,10 @@ body {
   height: 96.5%;
   opacity: 0.65;
   padding-top: 25px;
+  left: 0px;
+}
+.menu.inactive {
+  left: -300px;
 }
 
 form {
@@ -62,6 +66,30 @@ input:hover {
   padding-left: 10px;
 }
 
+/* Hamburger Menu */
+.menu label {
+  display: block;
+  position: absolute;
+  top: 8px;
+  right: -70px;
+  width: 45px;
+  height: 40px;
+  background-color: #555;
+  text-align: center;
+}
+
+.menu label div {
+  width: 33px;
+  height: 6px;
+  background-color: white;
+  margin: 5px 0px 0px 5px;
+
+}
+
+
+.menu form input {
+  margin-top: 20px;
+}
 .info {
   height: 100px;
   width: 150px;
@@ -70,4 +98,14 @@ input:hover {
   font-size: 15px;
   font-style: bold;
   color: #404040;
+}
+
+/* responsive design*/
+/*Hide nav in mobile view*/
+
+@media screen and (max-width: 600px) {
+  .nav {
+    visibility: hidden;
+    display: none;
+  }
 }
