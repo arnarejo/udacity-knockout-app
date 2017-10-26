@@ -1,3 +1,7 @@
+/* ==== Custom CSS for the App ====*/
+
+/* General document styling */
+
 *, html, body {
   margin: 0px;
   padding: 0px;
@@ -11,6 +15,7 @@ body {
   font-family: 'Open Sans', sans-serif;
 }
 
+/* styling top nav bar */
 .nav {
   height: 50px;
   background-color: #404040;
@@ -86,7 +91,6 @@ input:hover {
   margin: 5px 0px 0px 5px;
 
 }
-
 
 .menu form input {
   margin-top: 20px;

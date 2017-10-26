@@ -5,6 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <link rel="stylesheet" href="css/style.css">
+
+  <!-- Google Fonts API link-->
   <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
 
   <title>Udacity Neighbourhood Map</title>
@@ -14,33 +16,41 @@
   <div class="nav">
     <h3>Udacity Neighbourhood Map</h3>
   </div>
+
+  <!-- #map ID DOM element to display google Map-->
   <div id="map"></div>
 
   <div class="menu">
+
+    <!-- Hamburger button to control menu for responsive viewing-->
     <label class="toggle" onclick="toggleMenuBar()">
       <div></div>
       <div></div>
       <div></div>
     </label>
     <form action="">
-    <input type="text" data-bind="value: searchTerm, valueUpdate: 'afterkeydown'" placeholder="Search">
+      <input type="text" data-bind="value: searchTerm, valueUpdate: 'afterkeydown'" placeholder="Search">
     </form>
 
     <ul data-bind="foreach: visibleList">
       <li data-bind="text: $data.name, click: showInfoWindow"></li>
     </ul>
-  </div>
+  </div> <!-- End of menu div-->
 
-<script src="js/knockout-3.4.2.js"></script>
-<script src="js/jquery-3.2.1.min.js"></script>
-<script src="js/mapstyle.js"></script>
-<script src="js/locations.js"></script>
-<script src="js/main.js"></script>
+  <script src="js/knockout-3.4.2.js"></script>
+  <script src="js/jquery-3.2.1.min.js"></script>
+  <script src="js/mapstyle.js"></script>
 
-<script async defer
-src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCvcgUNisN_yrqEahRX89HT8Q2mtI3nTds&callback=initMap">
-</script>
+  <!-- custom locations-->
+  <script src="js/locations.js"></script>
 
+  <!--custom JS for MVVM model-->
+  <script src="js/main.js"></script>
+
+  <!--Google Maps API and initialize initMap()-->
+  <script async defer
+  src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCvcgUNisN_yrqEahRX89HT8Q2mtI3nTds&callback=initMap">
+  </script>
 
 </body>
 </html>

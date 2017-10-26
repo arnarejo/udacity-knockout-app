@@ -122,7 +122,7 @@ function initMap() {
   // map center location
   let center = {lat: -35.2914808, lng: 149.1296499};
   map = new google.maps.Map(document.getElementById('map'), {
-    zoom: 11,
+    zoom: 12,
     center: center,
     styles: customStyle,
     mapTypeControlOptions: {
