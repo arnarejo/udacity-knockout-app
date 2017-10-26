@@ -122,6 +122,11 @@ function initMap() {
     styles: customStyle
   });
 
+  //to resize the map on change of device width
+  google.maps.event.addDomListener(window, 'resize', function() {
+      map.setCenter(center);
+  });
+
   ko.applyBindings(new viewModel());
 
 };

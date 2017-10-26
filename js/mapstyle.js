@@ -49,7 +49,7 @@ let customStyle = [
         "visibility": "on"
       },
       {
-        "color": "#118983"
+        "color": "#81b441"
       }
     ]
   },
