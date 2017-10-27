@@ -1,7 +1,7 @@
 // 'strict mode' research source: https://www.w3schools.com/js/js_strict.asp
 'use strict';
 
-let map;
+let map, infoList;
 
 // foursquare API details
 let baseURL = "https://api.foursquare.com/v2/venues/";
@@ -31,10 +31,12 @@ let Location = function(data) {
 
   $.getJSON(fullURL).done(function(data) {
     let results = data.response.venue;
-//    console.log(data);
+    //    console.log(data);
     self.description = results.description;
     self.phone = results.contact.formattedPhone ? results.contact.formattedPhone: "";
     self.shortUrl = results.shortUrl;
+  }).fail(function() {
+    alert('Unable to access fourSquare API at the moment. Please check the connection or try later');
   });
 
   this.marker = new google.maps.Marker({
@@ -44,7 +46,11 @@ let Location = function(data) {
     title: self.name
   });
 
+  infoList = [];
   this.marker.addListener('click', function() {
+    infoList.forEach(function(window){
+      window.close();
+    });
 
     // set clicked marker as center of map - can use both map.setCenter() or map.panTo() to achieve similar end result
     map.panTo(self.marker.getPosition());
@@ -58,6 +64,8 @@ let Location = function(data) {
     self.infowindow = new google.maps.InfoWindow({
       content: self.infoText
     });
+
+    infoList.push(self.infowindow);
 
     self.infowindow.open(map, self.marker);
 
@@ -145,6 +153,7 @@ function initMap() {
   google.maps.event.addDomListener(window, 'resize', function() {
       map.setCenter(center);
   });
+
 
 
   // create a new KO instance of viewModel()
