@@ -14,15 +14,15 @@ function toggleMenuBar() {
   document.getElementsByClassName('menu')[0].classList.toggle('inactive');
 }
 
+// Model to initialize and store data
 let Location = function(data) {
 
   let self = this;
-
   this.name = data.name;
   this.location = data.location;
   this.fsId = data.fsId;
 
-  this.visible = ko.observable(true);
+  this.visible = ko.observable();
   this.description = '';
   this.phone = '';
   this.shortUrl = '';
@@ -36,13 +36,6 @@ let Location = function(data) {
     self.phone = results.contact.formattedPhone ? results.contact.formattedPhone: "";
     self.shortUrl = results.shortUrl;
   });
-
-  this.infowindow = new google.maps.InfoWindow({});
-
-  // close all infowindows on click in anywhere in the map
-  google.maps.event.addListener(map, 'click', function() {
-  				self.infowindow.close();
-  			});
 
   this.marker = new google.maps.Marker({
     position: self.location,
@@ -62,81 +55,74 @@ let Location = function(data) {
     self.infoText += self.phone ? '<strong>Phone: </strong>' + self.phone + '</br>' : '';
     self.infoText += '<a href="' + self.shortUrl + '" target="_blank">' + self.shortUrl + '</a>' + '</div>';
 
-    self.infowindow.setContent(self.infoText);
+    self.infowindow = new google.maps.InfoWindow({
+      content: self.infoText
+    });
+
     self.infowindow.open(map, self.marker);
+
     // Make marker bounce on click for only two bounces
     self.marker.setAnimation(google.maps.Animation.BOUNCE);
+
     setTimeout(function () {
       self.marker.setAnimation(null);
     }, 1410);
 
-
   });
 
-// Click function to display specific infowindow
+// display specific infowindow when clicked on the location name from the menu
   this.showInfoWindow = function() {
     google.maps.event.trigger(self.marker, 'click');
   }
 
   // make markers ko observable and link with the search results
   this.visibleMarkers = ko.computed(function() {
-    if(this.visible()) {
-      this.marker.setMap(map);
-    } else {
-      this.marker.setMap(null);
-    }
-
+    this.visible() ? this.marker.setMap(map) : this.marker.setMap(null);
   }, this);
-
 }
 
-
 // viewModel binds data (initialLocations and fourSquare API) with the the view (index.html)
-
 let viewModel = function() {
   self = this;
 
   // create a knockout observable list
   this.customList = ko.observableArray([]);
 
-  // create a knockout observable to link input text with the list of places
+  // create a knockout observable to store input text
   this.searchTerm = ko.observable('');
-  //  console.log(this.searchTerm());
 
-  // automatically populate customList with initialLocations by calling Locations object on each location
+  // populate customList with initialLocations by calling Locations object on each location
   initialLocations.forEach(function(location) {
     self.customList.push(new Location(location));
   });
 
   // filter knockout observable list of all locations (customList) with user input (this.searchTerm) to display selective locations
+  // reference: http://www.knockmeout.net/2011/04/utility-functions-in-knockoutjs.html
   this.visibleList = ko.computed( function() {
 
     let filter = self.searchTerm().toLowerCase();
 
-    // !filter returns 'true' if this.searchTerm is empty and will automatically make all locaitons visible
-    if (!filter) {
+    // !filter returns 'true' if this.searchTerm is empty and will automatically make all locations visible
+    if (filter === '') {
       self.customList().forEach(function(location) {
         location.visible(true);
       });
       return self.customList();
     } else {
-      // this will only execute if the input text in searchTerm is not empty
+      // following code will only execute if the input text in searchTerm is not empty
+      // console.log(filter);
       return ko.utils.arrayFilter(self.customList(), function(location) {
         let alpha = location.name.toLowerCase();
-        // making alpha.indexOf(filter) === 0 will match only locations matching exactly with the user input
-        if (alpha.indexOf(filter) >= 0) {
+        if (alpha.indexOf(filter) >= 0) {  // making alpha.indexOf(filter) === 0 will match only locations matching exactly with the user input
           location.visible(true);
           return true;
         } else {
           location.visible(false);
           return false;
-
         }
       });
     }
-
-  }, self);
-
+  }, this);
 };
 
 function initMap() {
@@ -145,21 +131,14 @@ function initMap() {
   let center = {lat: -35.2914808, lng: 149.1296499};
 
   // create a new google map instance and display in #map
-
   map = new google.maps.Map(document.getElementById('map'), {
     zoom: 12,
     center: center,
-
-    // customStyle are defined in separate JS file mapstyle.js
-    styles: customStyle,
-
-    // move map nagivation bar from top left to top right to avoid overlap with menu bar (source: google maps API documentation)
-    mapTypeControlOptions: {
+    styles: customStyle,     // customStyle are defined in separate JS file mapstyle.js
+    mapTypeControlOptions: {     // move map nagivation bar from top left to top right to avoid overlap with menu bar (source: google maps API documentation)
         style: google.maps.MapTypeControlStyle.HORIZONTAL_BAR,
         position: google.maps.ControlPosition.TOP_RIGHT
     },
-    // Can also use following to completely remove navigation bar (source: google maps API documentation)
-    //   disableDefaultUI: true
   });
 
   //to resize the map on change of device width
@@ -167,7 +146,7 @@ function initMap() {
       map.setCenter(center);
   });
 
+
   // create a new KO instance of viewModel()
   ko.applyBindings(new viewModel());
-
 };

@@ -10,7 +10,6 @@ let customStyle = [
       }
     ]
   },
-  // end - remove Places of Interest labels
   {
     "featureType": "landscape",
     "elementType": "geometry",

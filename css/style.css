@@ -91,10 +91,13 @@ input:hover {
 .menu form input {
   margin-top: 20px;
 }
+
 .info {
   min-height: 100px;
   width: 250px;
+  font-size: 12px;
 }
+
 .info h3 {
   font-size: 15px;
   font-style: bold;
