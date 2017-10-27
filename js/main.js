@@ -1,36 +1,39 @@
+// 'strict mode' research source: https://www.w3schools.com/js/js_strict.asp
 'use strict';
 
-var map, infowindow;
+let map;
 
 // foursquare API details
-var baseURL = "https://api.foursquare.com/v2/venues/";
+let baseURL = "https://api.foursquare.com/v2/venues/";
 
-var version = '20171023';
-var client_id = "QNNNN5DX5BXZVPQE5E5TDSTUC02EYCPFBDRP1HN30KEU4K3N";
-var client_secret = "ZQL14F31J2AHUSPDTWWG53AY3BKG5PQE3M3Z3APEIHLRGJ3A";
+let version = '20171027';
+let client_id = "QNNNN5DX5BXZVPQE5E5TDSTUC02EYCPFBDRP1HN30KEU4K3N";
+let client_secret = "ZQL14F31J2AHUSPDTWWG53AY3BKG5PQE3M3Z3APEIHLRGJ3A";
 
 // Hamburger menu toggle function
 function toggleMenuBar() {
   document.getElementsByClassName('menu')[0].classList.toggle('inactive');
 }
 
+let Location = function(data) {
 
-var Location = function(data) {
-
-  var self = this;
+  let self = this;
 
   this.name = data.name;
   this.location = data.location;
   this.fsId = data.fsId;
   this.visible = ko.observable(true);
+  this.description = '';
   this.phone = '';
   this.shortUrl = '';
 
-  var fullURL = baseURL + this.fsId + "?&client_id=" + client_id + "&client_secret=" + client_secret + "&v=" + version;
+  let fullURL = baseURL + this.fsId + "?&client_id=" + client_id + "&client_secret=" + client_secret + "&v=" + version;
 
   $.getJSON(fullURL).done(function(data) {
-    var results = data.response.venue;
-    self.phone = results.contact.formattedPhone;
+    let results = data.response.venue;
+    console.log(data);
+    self.description = results.description;
+    self.phone = results.contact.formattedPhone ? results.contact.formattedPhone: "";
     self.shortUrl = results.shortUrl;
   });
 
@@ -53,7 +56,12 @@ var Location = function(data) {
     // set clicked marker as center of map - can use both map.setCenter() or map.panTo() to achieve similar end result
     map.panTo(self.marker.getPosition());
 
-    self.infoText = '<div class="info"><h3>' + data.name + '</h3></br>' + '<strong>Phone: </strong>' + self.phone + '</br>' + self.shortUrl + '</div>';
+    self.infoText = '';
+    self.infoText += '<div class="info"><h3>' + data.name + '</h3></br>';
+    self.infoText += self.description ? '<p>' + self.description + '</p></br>' : '';
+    self.infoText += self.phone ? '<strong>Phone: </strong>' + self.phone + '</br>' : '';
+    self.infoText += '<a href="' + self.shortUrl + '" target="_blank">' + self.shortUrl + '</a>' + '</div>';
+
     self.infowindow.setContent(self.infoText);
     self.infowindow.open(map, self.marker);
     // Make marker bounce on click for only two bounces
@@ -82,7 +90,7 @@ var Location = function(data) {
 
 }
 
-var viewModel = function() {
+let viewModel = function() {
   self = this;
   this.customList = ko.observableArray([]);
   this.searchTerm = ko.observable('');
@@ -93,7 +101,7 @@ var viewModel = function() {
   });
 
   this.visibleList = ko.computed( function() {
-    var filter = self.searchTerm().toLowerCase();
+    let filter = self.searchTerm().toLowerCase();
     if (!filter) {
       self.customList().forEach(function(location) {
         location.visible(true);
@@ -101,7 +109,7 @@ var viewModel = function() {
       return self.customList();
     } else {
       return ko.utils.arrayFilter(self.customList(), function(location) {
-        var alpha = location.name.toLowerCase();
+        let alpha = location.name.toLowerCase();
         if (alpha.indexOf(filter) >= 0) {
           location.visible(true);
           return true;
