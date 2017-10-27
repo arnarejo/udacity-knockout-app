@@ -5,7 +5,6 @@ let map;
 
 // foursquare API details
 let baseURL = "https://api.foursquare.com/v2/venues/";
-
 let version = '20171027';
 let client_id = "QNNNN5DX5BXZVPQE5E5TDSTUC02EYCPFBDRP1HN30KEU4K3N";
 let client_secret = "ZQL14F31J2AHUSPDTWWG53AY3BKG5PQE3M3Z3APEIHLRGJ3A";
@@ -22,6 +21,7 @@ let Location = function(data) {
   this.name = data.name;
   this.location = data.location;
   this.fsId = data.fsId;
+
   this.visible = ko.observable(true);
   this.description = '';
   this.phone = '';
@@ -31,15 +31,15 @@ let Location = function(data) {
 
   $.getJSON(fullURL).done(function(data) {
     let results = data.response.venue;
-    console.log(data);
+//    console.log(data);
     self.description = results.description;
     self.phone = results.contact.formattedPhone ? results.contact.formattedPhone: "";
     self.shortUrl = results.shortUrl;
   });
 
-
   this.infowindow = new google.maps.InfoWindow({});
 
+  // close all infowindows on click in anywhere in the map
   google.maps.event.addListener(map, 'click', function() {
   				self.infowindow.close();
   			});
@@ -90,26 +90,40 @@ let Location = function(data) {
 
 }
 
+
+// viewModel binds data (initialLocations and fourSquare API) with the the view (index.html)
+
 let viewModel = function() {
   self = this;
+
+  // create a knockout observable list
   this.customList = ko.observableArray([]);
+
+  // create a knockout observable to link input text with the list of places
   this.searchTerm = ko.observable('');
   //  console.log(this.searchTerm());
 
+  // automatically populate customList with initialLocations by calling Locations object on each location
   initialLocations.forEach(function(location) {
     self.customList.push(new Location(location));
   });
 
+  // filter knockout observable list of all locations (customList) with user input (this.searchTerm) to display selective locations
   this.visibleList = ko.computed( function() {
+
     let filter = self.searchTerm().toLowerCase();
+
+    // !filter returns 'true' if this.searchTerm is empty and will automatically make all locaitons visible
     if (!filter) {
       self.customList().forEach(function(location) {
         location.visible(true);
       });
       return self.customList();
     } else {
+      // this will only execute if the input text in searchTerm is not empty
       return ko.utils.arrayFilter(self.customList(), function(location) {
         let alpha = location.name.toLowerCase();
+        // making alpha.indexOf(filter) === 0 will match only locations matching exactly with the user input
         if (alpha.indexOf(filter) >= 0) {
           location.visible(true);
           return true;
@@ -129,16 +143,23 @@ function initMap() {
 
   // map center location
   let center = {lat: -35.2914808, lng: 149.1296499};
+
+  // create a new google map instance and display in #map
+
   map = new google.maps.Map(document.getElementById('map'), {
     zoom: 12,
     center: center,
+
+    // customStyle are defined in separate JS file mapstyle.js
     styles: customStyle,
+
+    // move map nagivation bar from top left to top right to avoid overlap with menu bar (source: google maps API documentation)
     mapTypeControlOptions: {
         style: google.maps.MapTypeControlStyle.HORIZONTAL_BAR,
         position: google.maps.ControlPosition.TOP_RIGHT
     },
-//   disableDefaultUI: true
-
+    // Can also use following to completely remove navigation bar (source: google maps API documentation)
+    //   disableDefaultUI: true
   });
 
   //to resize the map on change of device width
@@ -146,6 +167,7 @@ function initMap() {
       map.setCenter(center);
   });
 
+  // create a new KO instance of viewModel()
   ko.applyBindings(new viewModel());
 
 };

@@ -92,8 +92,8 @@ input:hover {
   margin-top: 20px;
 }
 .info {
-  min-height: 50px;
-  width: 350px;
+  min-height: 100px;
+  width: 250px;
 }
 .info h3 {
   font-size: 15px;
@@ -103,10 +103,11 @@ input:hover {
 
 a {
   text-decoration: none;
-  color: black;
+  color: grey;
 }
 a:hover {
-  color: #81b441;
+  color: green;
+  text-decoration: underline;
 
 }
 /* responsive design*/
