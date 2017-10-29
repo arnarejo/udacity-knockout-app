@@ -16,13 +16,17 @@ body {
 }
 
 /* styling top nav bar */
-.nav {
+.header {
   height: 50px;
   background-color: #404040;
   color: #81b441;
   z-index: 2;
   padding-top: 10px;
   padding-left: 25px;
+}
+
+.header h1 {
+  font-size: 25px;
 }
 
 #map {
@@ -114,10 +118,10 @@ a:hover {
 
 }
 /* responsive design*/
-/*Hide nav in mobile view*/
+/*Hide header in mobile view*/
 
 @media screen and (max-width: 600px) {
-  .nav {
+  .header {
     visibility: hidden;
     display: none;
   }

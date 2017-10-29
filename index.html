@@ -13,29 +13,30 @@
 </head>
 <body>
 
-  <div class="nav">
-    <h3>Udacity Neighbourhood Map</h3>
-  </div>
+<header class="header">
+    <h1>Udacity Neighbourhood Map</h1>
+</header>
 
   <!-- #map ID DOM element to display google Map-->
-  <div id="map"></div>
+  <main id="map">
+  </main>
 
-  <div class="menu">
+  <aside class="menu">
+      <!-- Hamburger button to control menu for responsive viewing-->
+      <label class="toggle" onclick="toggleMenuBar()">
+        <div></div>
+        <div></div>
+        <div></div>
+      </label>
+      <form action="">
+        <input type="text" data-bind="value: searchTerm, valueUpdate: 'afterkeydown'" placeholder="Search">
+      </form>
 
-    <!-- Hamburger button to control menu for responsive viewing-->
-    <label class="toggle" onclick="toggleMenuBar()">
-      <div></div>
-      <div></div>
-      <div></div>
-    </label>
-    <form action="">
-      <input type="text" data-bind="value: searchTerm, valueUpdate: 'afterkeydown'" placeholder="Search">
-    </form>
+      <ul data-bind="foreach: visibleList">
+        <li data-bind="text: $data.name, click: showInfoWindow"></li>
+      </ul>
+  </aside>
 
-    <ul data-bind="foreach: visibleList">
-      <li data-bind="text: $data.name, click: showInfoWindow"></li>
-    </ul>
-  </div> <!-- End of menu div-->
 
   <script src="js/knockout-3.4.2.js"></script>
   <script src="js/jquery-3.2.1.min.js"></script>
