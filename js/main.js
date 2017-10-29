@@ -154,12 +154,10 @@ function initMap() {
       map.setCenter(center);
   });
 
-
-
   // create a new KO instance of viewModel()
   ko.applyBindings(new viewModel());
 };
 
 function errorMessage() {
-  alert('Unable to access Google Maps at the moment. Please try later');
+  alert("Error alert: Unable to load Google Maps, please try later.");
 };
