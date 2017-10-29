@@ -74,7 +74,7 @@ let Location = function(data) {
 
     setTimeout(function () {
       self.marker.setAnimation(null);
-    }, 1410);
+    }, 1400);
 
   });
 
@@ -90,7 +90,7 @@ let Location = function(data) {
 }
 
 // viewModel binds data (initialLocations and fourSquare API) with the the view (index.html)
-let viewModel = function() {
+let ViewModel = function() {
   self = this;
 
   // create a knockout observable list
@@ -155,7 +155,7 @@ function initMap() {
   });
 
   // create a new KO instance of viewModel()
-  ko.applyBindings(new viewModel());
+  ko.applyBindings(new ViewModel());
 };
 
 function errorMessage() {
