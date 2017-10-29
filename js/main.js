@@ -159,3 +159,7 @@ function initMap() {
   // create a new KO instance of viewModel()
   ko.applyBindings(new viewModel());
 };
+
+function errorMessage() {
+  alert('Unable to access Google Maps at the moment. Please try later');
+};
