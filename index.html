@@ -24,9 +24,9 @@
 
   </div>
 
-  <aside class="menu">
+  <aside class="menu"  data-bind="css: {'inactive': menuMakeInvisible}">
       <!-- Hamburger button to control menu for responsive viewing-->
-      <label class="toggle" onclick="toggleMenuBar()">
+      <label class="toggle" data-bind="click: menuSlide">
         <div></div>
         <div></div>
         <div></div>

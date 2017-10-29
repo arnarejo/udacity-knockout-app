@@ -9,10 +9,10 @@ let version = '20171027';
 let client_id = "QNNNN5DX5BXZVPQE5E5TDSTUC02EYCPFBDRP1HN30KEU4K3N";
 let client_secret = "ZQL14F31J2AHUSPDTWWG53AY3BKG5PQE3M3Z3APEIHLRGJ3A";
 
-// Hamburger menu toggle function
-function toggleMenuBar() {
-  document.getElementsByClassName('menu')[0].classList.toggle('inactive');
-}
+// // Hamburger menu toggle function
+// function toggleMenuBar() {
+//   document.getElementsByClassName('menu')[0].classList.toggle('inactive');
+// }
 
 // Model to initialize and store data
 let Location = function(data) {
@@ -92,6 +92,12 @@ let Location = function(data) {
 // viewModel binds data (initialLocations and fourSquare API) with the the view (index.html)
 let ViewModel = function() {
   self = this;
+
+  this.menuMakeInvisible = ko.observable(false);
+  this.menuSlide = function() {
+    this.menuMakeInvisible(!this.menuMakeInvisible());
+  };
+
 
   // create a knockout observable list
   this.customList = ko.observableArray([]);
